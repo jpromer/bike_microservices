@@ -2,20 +2,20 @@ const db = require("../models");
 const Bike = db.bike;
 
 exports.create = (req, res) => {
-  if (!req.body.idBike) {
+  if (!req.idBike) {
     res
       .status(400)
       .send({ message: "Can't add bike, idBike field is required" });
     return;
   }
 
-  if (!req.body.color) {
+  if (!req.color) {
     res
       .status(400)
       .send({ message: "Can't add bike, color field is required" });
     return;
   }
-  if (!req.body.model) {
+  if (!req.model) {
     res
       .status(400)
       .send({ message: "Can't add bike, model field is required" });
@@ -23,11 +23,11 @@ exports.create = (req, res) => {
   }
 
   const bike = new Bike({
-    idBike: req.body.idBike,
-    color: req.body.color,
-    model: req.body.model,
-    longitud: req.body.longitud,
-    latitud: req.body.latitud,
+    idBike: req.dBike,
+    color: req.color,
+    model: req.model,
+    longitud: req.longitud,
+    latitud: req.latitud,
   });
   bike
     .save(bike)
