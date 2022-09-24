@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = {
-  url: "mongodb+srv://desarrollo:BcilntUmkE4CnMLu@cluster0.ipabhxh.mongodb.net/cykel",
+  url: process.env.MONGOBD,
 };
