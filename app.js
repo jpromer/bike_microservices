@@ -27,6 +27,26 @@ async function connectQueue() {
     console.log(error);
   }
 }
+connectQueue2();
+async function connectQueue2() {
+  try {
+    connection = await amqp.connect(
+      "amqps://rakeswqy:TQLGAcSh5D89pvC_OpxFMTScvFTfq1cA@moose.rmq.cloudamqp.com/rakeswqy"
+    );
+    channel = await connection.createChannel();
+    // connect to 'test-queue', create one if doesnot exist already
+    await channel.assertQueue("udatebike");
+
+    channel.consume("udatebike", (data) => {
+      console.log(JSON.parse(data.content.toString()));
+      bike.updateState(JSON.parse(data.content.toString()));
+
+      channel.ack(data);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 var app = express();
 

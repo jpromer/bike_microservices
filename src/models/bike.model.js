@@ -8,6 +8,7 @@ module.exports = (mongoose) => {
         model: { type: String },
         longitud: { type: Number },
         latitud: { type: Number },
+        state: { type: String },
       },
       { timestamps: false }
     )

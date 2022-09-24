@@ -2,42 +2,22 @@ const db = require("../models");
 const Bike = db.bike;
 
 exports.create = (req, res) => {
-  if (!req.idBike) {
-    res
-      .status(400)
-      .send({ message: "Can't add bike, idBike field is required" });
-    return;
-  }
-
-  if (!req.color) {
-    res
-      .status(400)
-      .send({ message: "Can't add bike, color field is required" });
-    return;
-  }
-  if (!req.model) {
-    res
-      .status(400)
-      .send({ message: "Can't add bike, model field is required" });
-    return;
-  }
-
+  console.log(req);
   const bike = new Bike({
-    idBike: req.dBike,
+    idBike: req.idBike,
     color: req.color,
     model: req.model,
     longitud: req.longitud,
     latitud: req.latitud,
+    state: req.state,
   });
   bike
     .save(bike)
     .then((data) => {
-      res.send(data);
+      console.log("usuario almacenado" + data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message: err.message || "An error occurred while storing a bike",
-      });
+      console.log("An error occurred while storing a bike");
     });
 };
 
@@ -105,11 +85,10 @@ exports.update = (req, res) => {
     });
   }
 
-  Bike.updateOne(
+  Bike.updateOne(    
     { idBike: req.params.idBike },
     { $set: req.body },
-    { useFindAndModify: false },
-    
+    { useFindAndModify: false }
   )
     .then((data) => {
       if (!data) {
@@ -122,5 +101,24 @@ exports.update = (req, res) => {
       res.status(500).send({
         message: "Error updating bike with id" + idBike,
       });
+    });
+};
+
+exports.updateState = (req, res) => {
+  const body = {state: req.state}
+  Bike.updateOne(
+    { idBike: req.idBike },
+    { $set: body },
+    { useFindAndModify: false }
+  )
+    .then((data) => {
+      if (!data) {
+        console.log("No se actualizo el bike");
+      } else {
+        console.log("Bicicleta actualizada");
+      }
+    })
+    .catch((err) => {
+      console.log("Error updating bike with id");
     });
 };
