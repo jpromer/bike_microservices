@@ -26,6 +26,8 @@ exports.create = (req, res) => {
     idBike: req.body.idBike,
     color: req.body.color,
     model: req.body.model,
+    longitud: req.body.longitud,
+    latitud: req.body.latitud,
   });
   bike
     .save(bike)
@@ -103,10 +105,11 @@ exports.update = (req, res) => {
     });
   }
 
- Bike.updateOne(
+  Bike.updateOne(
     { idBike: req.params.idBike },
     { $set: req.body },
-    { useFindAndModify: false }
+    { useFindAndModify: false },
+    
   )
     .then((data) => {
       if (!data) {
@@ -117,9 +120,7 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          "Error updating bike with id" +
-          idBike,
+        message: "Error updating bike with id" + idBike,
       });
     });
 };
