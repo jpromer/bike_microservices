@@ -14,7 +14,7 @@ exports.create = (req, res) => {
   bike
     .save(bike)
     .then((data) => {
-      console.log("usuario almacenado" + data);
+      res.send(data);
     })
     .catch((err) => {
       console.log("An error occurred while storing a bike");

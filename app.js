@@ -2,6 +2,7 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
+var cors = require('cors')
 var logger = require("morgan");
 const bodyParser = require("body-parser");
 const bike = require("./src/controller/bike.controller");
@@ -50,6 +51,7 @@ async function connectQueue2() {
 
 var app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
