@@ -20,7 +20,13 @@ exports.create = (req, res) => {
   });
   bike
     .save(bike)
-    .then((data) => {
+    .then((data) => { /** {
+      "idBike": 23400,
+      "color": "blue",
+      "model": "34",
+      "_id": "634f15a5a7ea9bdc81d3ac38",
+      "__v": 0
+  } */
       res.send(data);
     })
     .catch((err) => {
