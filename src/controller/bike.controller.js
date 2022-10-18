@@ -2,14 +2,21 @@ const db = require("../models");
 const Bike = db.bike;
 
 exports.create = (req, res) => {
-  console.log(req);
+  console.log("eher we go")
+  console.log(req.body);
+  if(req.body.idBike==null){
+    res.status(405).send({
+      message: `operation not permited a bikeid must be provided as number`,
+    })
+    return;
+  }
   const bike = new Bike({
-    idBike: req.idBike,
-    color: req.color,
-    model: req.model,
-    longitud: req.longitud,
-    latitud: req.latitud,
-    state: req.state,
+    idBike: req.body.idBike,
+    color: req.body.color,
+    model: req.body.model,
+    longitud: req.body.longitud,
+    latitud: req.body.latitud,
+    state: req.body.state,
   });
   bike
     .save(bike)
@@ -18,10 +25,14 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       console.log("An error occurred while storing a bike");
+      res.status(405).send({
+        message: `operation not permited the bike already exist`,
+      })
     });
 };
 
 exports.findAll = (req, res) => {
+  console.log("hi here"+JSON.stringify(req.params))
   const idBike = req.query.idBike;
   var condicion = idBike
     ? { idBike: { $regex: new RegExp(idBike), $options: "i" } }
@@ -57,6 +68,8 @@ exports.findOne = (req, res) => {
 };
 
 exports.deleteOne = (req, res) => {
+  console.log("here")
+  console.log("hi here"+JSON.stringify(req.params))
   const idBike = req.params.idBike;
 
   Bike.deleteOne({ idBike: idBike })
@@ -72,6 +85,7 @@ exports.deleteOne = (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).send({
         message: "Error deleting bikes",
       });

@@ -9,46 +9,6 @@ const bike = require("./src/controller/bike.controller");
 const amqp = require("amqplib");
 var channel, connection;
 
-connectQueue(); // call connectQueue function
-async function connectQueue() {
-  try {
-    connection = await amqp.connect(
-      "amqps://rakeswqy:TQLGAcSh5D89pvC_OpxFMTScvFTfq1cA@moose.rmq.cloudamqp.com/rakeswqy"
-    );
-    channel = await connection.createChannel();
-    // connect to 'test-queue', create one if doesnot exist already
-    await channel.assertQueue("bike");
-
-    channel.consume("bike", (data) => {
-      bike.create(JSON.parse(data.content.toString()));
-
-      channel.ack(data);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-connectQueue2();
-async function connectQueue2() {
-  try {
-    connection = await amqp.connect(
-      "amqps://rakeswqy:TQLGAcSh5D89pvC_OpxFMTScvFTfq1cA@moose.rmq.cloudamqp.com/rakeswqy"
-    );
-    channel = await connection.createChannel();
-    // connect to 'test-queue', create one if doesnot exist already
-    await channel.assertQueue("udatebike");
-
-    channel.consume("udatebike", (data) => {
-      console.log(JSON.parse(data.content.toString()));
-      bike.updateState(JSON.parse(data.content.toString()));
-
-      channel.ack(data);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 var app = express();
 
 app.use(cors());
@@ -83,6 +43,8 @@ db.mongoose
     process.exit();
   });
 
+exports.db=db
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -91,7 +53,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.json({error:"error"});
 });
 
 module.exports = app;
