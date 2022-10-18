@@ -20,13 +20,7 @@ exports.create = (req, res) => {
   });
   bike
     .save(bike)
-    .then((data) => { /** {
-      "idBike": 23400,
-      "color": "blue",
-      "model": "34",
-      "_id": "634f15a5a7ea9bdc81d3ac38",
-      "__v": 0
-  } */
+    .then((data) => {
       res.send(data);
     })
     .catch((err) => {
@@ -38,7 +32,7 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  console.log("hi here"+JSON.stringify(req.params))
+  console.log("hi here"+req.query.idBike)
   const idBike = req.query.idBike;
   var condicion = idBike
     ? { idBike: { $regex: new RegExp(idBike), $options: "i" } }
@@ -46,6 +40,7 @@ exports.findAll = (req, res) => {
 
   Bike.find(condicion)
     .then((data) => {
+      console.log("find "+JSON.stringify(data))
       res.send(data);
     })
     .catch((err) => {
@@ -67,6 +62,7 @@ exports.findOne = (req, res) => {
       } else res.send(data);
     })
     .catch((err) => {
+     
       res.status(500).send({
         message: "Error bringing the bike =" + idBike,
       });
@@ -74,8 +70,6 @@ exports.findOne = (req, res) => {
 };
 
 exports.deleteOne = (req, res) => {
-  console.log("here")
-  console.log("hi here"+JSON.stringify(req.params))
   const idBike = req.params.idBike;
 
   Bike.deleteOne({ idBike: idBike })

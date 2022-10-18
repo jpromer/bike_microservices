@@ -12,9 +12,27 @@ chai.use(chaiHttp);
 //Our parent block
 
 describe("/GET Bikes", () => {
-    sinon.stub(Bike.prototype,'save')
-    .yieldsTo('success',{})
+  let saveStub;
+  let findStub;
+  beforeEach(function () {
+    saveStub = sinon.stub(Bike.prototype, "save").yieldsTo("success", {});
+    findStub = sinon.stub(Bike, "find").returns(
+      Promise.resolve([
+        {
+          _id: "634f15a5a7ea9bdc81d3ac38",
+          idBike: 23400,
+          color: "blue",
+          model: "34",
+          __v: 0,
+        },
+      ])
+    );
+  });
 
+  afterEach(function () {
+    saveStub.restore();
+    findStub.restore();
+  });
 
   it("it should not Create a bike without id ", (done) => {
     let bike = {
@@ -29,6 +47,19 @@ describe("/GET Bikes", () => {
         console.log(JSON.stringify(res));
         res.should.have.status(405);
         res.body.should.be.a("object");
+        done();
+      });
+  });
+
+  it("find should return the bike that has the specific id  ", (done) => {
+    chai
+      .request(server)
+      .get("/")
+      .end((err, res) => {
+        console.log("get23432" + JSON.stringify(res));
+        res.should.have.status(200);
+        res.body.should.be.a("array");
+        res.body.should.have.lengthOf(1)
         done();
       });
   });
