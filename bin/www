@@ -107,3 +107,5 @@ db.mongoose
   });
 
 exports.db=db
+
+module.exports=app

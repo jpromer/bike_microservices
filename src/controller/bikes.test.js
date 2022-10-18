@@ -12,14 +12,11 @@ chai.use(chaiHttp);
 //Our parent block
 
 describe("/GET Bikes", () => {
-    sinon.mock(Bike)
-    .expects('save')
-    .yields(null, 'SUCCESS!');
+    sinon.stub(Bike.prototype,'save')
+    .yieldsTo('success',{})
 
 
   it("it should not Create a bike without id ", (done) => {
-    sinon.mock()
-   
     let bike = {
       color: "blue",
       model: "34",

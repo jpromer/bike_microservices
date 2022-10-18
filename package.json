@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "NODE_ENV=testing mocha 'src/**/*.test.js' --timeout 120000 --recursive --exit"
+    "test": "NODE_ENV=testing mocha 'src/**/*.test.js' -b --timeout 120000 --recursive --exit"
   },
   "dependencies": {
     "amqplib": "^0.10.3",
