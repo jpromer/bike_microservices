@@ -29,21 +29,6 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-const db = require("./src/models");
-db.mongoose
-  .connect(db.url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Conexion a base de datos exitosa");
-  })
-  .catch((err) => {
-    console.log("No se pudo establecer conexion con la base de datos", err);
-    process.exit();
-  });
-
-exports.db=db
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -53,7 +38,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({error:"error"});
+  res.json({error:"error"+ err});
 });
 
 module.exports = app;
