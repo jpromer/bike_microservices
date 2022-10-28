@@ -3,9 +3,12 @@ module.exports = (mongoose) => {
     "bike",
     mongoose.Schema(
       {
-        idBike: { type: Number, index: { unique: true, sparse: true }},
-        color: { type: String, index: { unique: true, sparse: true } },
-        model: { type: String, index: { unique: true, sparse: true } },
+        idBike: { type: Number, index: { unique: true, sparse: true } },
+        color: { type: String },
+        model: { type: String },
+        longitud: { type: Number },
+        latitud: { type: Number },
+        state: { type: String },
       },
       { timestamps: false }
     )

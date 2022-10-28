@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bikemicroservices-v1
+  labels:
+    app: bikemicroservices
+    version: "1.0"
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: bikemicroservices
+  template:
+    metadata:
+      labels:
+        app: bikemicroservices
+        version: "1.0"
+    spec:
+      containers:
+      - name: bikemicroservices
+        image: jpromer/microservicesbikev2
+        ports:
+        - name: http-server
+          containerPort: 3001

@@ -2,30 +2,21 @@ const db = require("../models");
 const Bike = db.bike;
 
 exports.create = (req, res) => {
-  if (!req.body.idBike) {
-    res
-      .status(400)
-      .send({ message: "Can't add bike, idBike field is required" });
+  console.log("eher we go")
+  console.log(req.body);
+  if(req.body.idBike==null){
+    res.status(405).send({
+      message: `operation not permited a bikeid must be provided as number`,
+    })
     return;
   }
-
-  if (!req.body.color) {
-    res
-      .status(400)
-      .send({ message: "Can't add bike, color field is required" });
-    return;
-  }
-  if (!req.body.model) {
-    res
-      .status(400)
-      .send({ message: "Can't add bike, model field is required" });
-    return;
-  }
-
   const bike = new Bike({
     idBike: req.body.idBike,
     color: req.body.color,
     model: req.body.model,
+    longitud: req.body.longitud,
+    latitud: req.body.latitud,
+    state: req.body.state,
   });
   bike
     .save(bike)
@@ -33,13 +24,15 @@ exports.create = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message: err.message || "An error occurred while storing a bike",
-      });
+      console.log("An error occurred while storing a bike");
+      res.status(405).send({
+        message: `operation not permited the bike already exist`,
+      })
     });
 };
 
 exports.findAll = (req, res) => {
+  console.log("hi here"+req.query.idBike)
   const idBike = req.query.idBike;
   var condicion = idBike
     ? { idBike: { $regex: new RegExp(idBike), $options: "i" } }
@@ -47,6 +40,7 @@ exports.findAll = (req, res) => {
 
   Bike.find(condicion)
     .then((data) => {
+      console.log("find "+JSON.stringify(data))
       res.send(data);
     })
     .catch((err) => {
@@ -68,6 +62,7 @@ exports.findOne = (req, res) => {
       } else res.send(data);
     })
     .catch((err) => {
+     
       res.status(500).send({
         message: "Error bringing the bike =" + idBike,
       });
@@ -90,6 +85,7 @@ exports.deleteOne = (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).send({
         message: "Error deleting bikes",
       });
@@ -103,7 +99,7 @@ exports.update = (req, res) => {
     });
   }
 
- Bike.updateOne(
+  Bike.updateOne(    
     { idBike: req.params.idBike },
     { $set: req.body },
     { useFindAndModify: false }
@@ -117,9 +113,26 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          "Error updating bike with id" +
-          idBike,
+        message: "Error updating bike with id" + idBike,
       });
+    });
+};
+
+exports.updateState = (req, res) => {
+  const body = {state: req.state}
+  Bike.updateOne(
+    { idBike: req.idBike },
+    { $set: body },
+    { useFindAndModify: false }
+  )
+    .then((data) => {
+      if (!data) {
+        console.log("No se actualizo el bike");
+      } else {
+        console.log("Bicicleta actualizada");
+      }
+    })
+    .catch((err) => {
+      console.log("Error updating bike with id");
     });
 };

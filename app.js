@@ -2,11 +2,16 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
+var cors = require('cors')
 var logger = require("morgan");
 const bodyParser = require("body-parser");
+const bike = require("./src/controller/bike.controller");
+const amqp = require("amqplib");
+var channel, connection;
 
 var app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,19 +29,6 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-const db = require("./src/models");
-db.mongoose
-  .connect(db.url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Conexion a base de datos exitosa");
-  })
-  .catch((err) => {
-    console.log("No se pudo establecer conexion con la base de datos", err);
-    process.exit();
-  });
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -46,7 +38,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.json({error:"error"+ err});
 });
 
 module.exports = app;

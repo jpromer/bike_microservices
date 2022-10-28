@@ -11,8 +11,9 @@ RUN npm install
 COPY . /app
 
 ENV NODE_ENV QA
-ENV PORT 3000
+ENV PORT 3001
+ENV MONGOBD mongodb+srv://desarrollo:BcilntUmkE4CnMLu@cluster0.ipabhxh.mongodb.net/cykel
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD [ "npm", "start" ]
