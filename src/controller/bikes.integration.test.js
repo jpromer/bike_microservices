@@ -14,15 +14,19 @@ describe("Books", () => {
    */
   describe("/GET Bikes", () => {
     it("it should GET all the Bikes", (done) => {
-      chai
-        .request(server)
-        .get("/")
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a("array");
-          done();
-        });
-        done();
+      try {
+        chai
+          .request(server)
+          .get("/")
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a("array");
+            done();
+          });
+      } catch (error) {
+        console.log("error on test get all" + error);
+        done(new Error("Test failed to start"));
+      }
     });
 
     it("it should not Create a bike without id ", (done) => {
@@ -30,17 +34,21 @@ describe("Books", () => {
         color: "blue",
         model: "34",
       };
-      chai
-        .request(server)
-        .post("/")
-        .send(bike)
-        .end((err, res) => {
-          console.log(JSON.stringify(res));
-          res.should.have.status(405);
-          res.body.should.be.a("object");
-          done();
-        });
-        done();
+      try {
+        chai
+          .request(server)
+          .post("/")
+          .send(bike)
+          .end((err, res) => {
+            console.log(JSON.stringify(res));
+            res.should.have.status(405);
+            res.body.should.be.a("object");
+            done();
+          });
+      } catch (error) {
+        console.log("error on test get all" + error);
+        done(new Error("Test failed to start"));
+      }
     });
   });
 });
