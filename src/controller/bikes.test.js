@@ -45,7 +45,6 @@ describe("/GET Bikes", () => {
       .send(bike)
       .end((err, res) => {
         console.log(JSON.stringify(res));
-        res.should.have.status(500);//intentional failure
         res.should.have.status(405);
         res.body.should.be.a("object");
         done();
