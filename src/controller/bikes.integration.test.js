@@ -22,7 +22,7 @@ describe("Books", () => {
           res.body.should.be.a("array");
           done();
         });
-      console.log("error on test get all" + error);
+        done();
     });
 
     it("it should not Create a bike without id ", (done) => {
@@ -40,6 +40,7 @@ describe("Books", () => {
           res.body.should.be.a("object");
           done();
         });
+        done();
     });
   });
 });
