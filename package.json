@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "testIntegracion": "mocha 'src/controller/bikes.integration.test.js' -b --timeout 1000 --recursive --exit",
+    "testIntegracion": "mocha 'src/controller/bikes.integration.test.js' -b --timeout 10000 --recursive --exit",
     "testUnitarios": "mocha 'src/controller/bikes.test.js' -b --timeout 120000 --recursive --exit"
   },
   "dependencies": {
