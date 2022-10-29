@@ -3,7 +3,12 @@ const Bike = db.bike;
 
 exports.create = (req, res) => {
   console.log(req.body);
-
+  if(req.body.idBike==null){
+    res.status(405).send({
+      message: `operation not permited a bikeid must be provided as number`,
+    })
+    return;
+  }
   const bike = new Bike({
     idBike: req.body.idBike,
     color: req.body.color,
