@@ -2,7 +2,6 @@ const db = require("../models");
 const Bike = db.bike;
 
 exports.create = (req, res) => {
-  console.log("eher we go")
   console.log(req.body);
   if(req.body.idBike==null){
     res.status(405).send({
